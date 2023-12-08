@@ -2,6 +2,8 @@ from pathlib import Path
 from os import listdir
 import pandas as pd
 
+import re
+
 
 def bool_to_bin(b):
     if b:
@@ -10,7 +12,6 @@ def bool_to_bin(b):
 
 
 dirlist = listdir("C:/Users/sammy/PycharmProjects/KhipuData/khipu/full")
-
 
 headings = {
     'Cord_Name': [],
@@ -32,7 +33,6 @@ headings = {
 }
 
 perm_df = pd.DataFrame(headings)
-
 
 for xlsx in dirlist:
     print(xlsx)
@@ -62,5 +62,23 @@ for xlsx in dirlist:
     df = df.drop(columns=['Notes'])
     perm_df = pd.concat([df, perm_df], ignore_index=True)
 
+    knot_count = []
+    for ind in perm_df.index:
+        k = 0
+
+        value_str = ''
+        try:
+            value_str = str(int(perm_df['Value'][ind]))
+        except ValueError:
+            print("value error:")
+            print(perm_df['Value'][ind])
+
+        for digit in value_str:
+            k += int(digit)
+
+        knot_count.append(k)
+        # print("Value: " + str(perm_df['Value'][ind]) + ", count: " + str(k))
+
 print(perm_df)
+
 perm_df.to_stata('KhipuData.dta')
