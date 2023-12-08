@@ -79,6 +79,7 @@ for xlsx in dirlist:
         knot_count.append(k)
         # print("Value: " + str(perm_df['Value'][ind]) + ", count: " + str(k))
 
+perm_df['Knot_Count'] = knot_count
 print(perm_df)
 
 perm_df.to_stata('KhipuData.dta')
